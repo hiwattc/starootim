@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{fragments/header :: headerFragment}"></div>
+<link rel="stylesheet" th:href="@{/css/register.css}" />
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2 bg-light sidebar" >
+      <div th:replace="~{fragments/left.html :: leftSection}"></div>
+    </div>
+    <div class="col-md-10">
+      <div th:replace="~{fragments/top.html :: topSection}"></div>
+      <div class="main" align="center">
+        <div class="registration-container">
+          <div class="registration-header">
+            <h2>Password Change</h2>
+          </div>
+          <div class="registration-form">
+            <form method="post" action="/profile/modifyPwd">
+              <div class="form-group">
+                <label for="password1">password:</label>
+                <input type="password" class="form-control" id="password1" name="password1" th:value="${password1}" th:attr="oninput='checkPasswordStrength()'" required>
+              </div>
+              <div class="form-group">
+                <label for="password2">password confirm:</label>
+                <input type="password" id="password2" name="password2" th:value="${password2}" required>
+              </div>
+              <button class="register-btn" type="submit">Apply</button>
+            </form>
+
+            <div>
+              <script>
+                    function checkPasswordStrength() {
+                        const newPassword = document.getElementById('password1').value;
+                        const passwordStrengthLabel = document.getElementById('passwordStrengthLabel');
+                        const passwordStrengthBar = document.getElementById('passwordStrengthBar');
+
+                        // 암호 강도 체크
+                        const lengthScore = Math.min(newPassword.length / 8, 1);
+                        const hasAlphaNumericSpecialChars = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])/.test(newPassword);
+                        const strengthScore = lengthScore * (hasAlphaNumericSpecialChars ? 1 : 0.5);
+
+                        // 암호 강도에 따른 레이블과 색상 변경
+                        let strengthLabel = '';
+                        let strengthClass = '';
+                        if (strengthScore >= 0.8) {
+                            strengthLabel = '강력';
+                            strengthClass = 'strength-strong';
+                        } else if (strengthScore >= 0.5) {
+                            strengthLabel = '보통';
+                            strengthClass = 'strength-fair';
+                        } else {
+                            strengthLabel = '약함';
+                            strengthClass = 'strength-weak';
+                        }
+
+                        passwordStrengthLabel.textContent = strengthLabel;
+                        passwordStrengthBar.style.width = (strengthScore * 100) + '%';
+                        passwordStrengthBar.classList = 'password-strength-bar ' + strengthClass;
+                    }
+                </script>
+            </div>
+
+            <div class="password-strength-meter">
+              <div class="password-strength-label" id="passwordStrengthLabel"></div>
+              <div class="password-strength-bar" id="passwordStrengthBar"></div>
+            </div>
+
+            <p>① 8자리이상</p>
+            <p>② 알파벳,숫자,특수기호 포함</p>
+            <p>③ 연속된 3글자 포함불가</p>
+            <p th:text="${message}"></p>
+            <div th:if="${passwordChanged}">
+              <a href="/login">다시 로그인해 주세요</a>
+            </div>
+            <!-- Toast 메시지 띄우기 -->
+            <div class="container mt-5">
+              <!-- Toast 메시지를 표시할 버튼 -->
+              <!--<button type="button" class="btn btn-primary" onclick="showToast()">Toast 메시지 띄우기</button>-->
+
+              <!-- Toast 메시지를 표시할 컨테이너 -->
+              <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
+                  <div class="toast-header">
+                    <strong class="me-auto">알림</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                  </div>
+                  <div class="toast-body">
+                    암호가 변경되었습니다. 다시 로그인해 주세요.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:insert="~{fragments/footer :: footerFragment}"></div>
+<div th:if="${passwordChanged}">
+  <!-- Toast 메시지 띄우는 JavaScript 함수 :로딩시점상 화면 하위에 위치함-->
+  <script>
+      var toast = new bootstrap.Toast(document.querySelector('.toast'));
+      toast.show();
+  </script>
+</div>
+
+
+</body>
+</html>

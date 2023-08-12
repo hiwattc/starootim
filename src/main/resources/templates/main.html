@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{fragments/header :: headerFragment}"></div>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 bg-light sidebar" >
+            <div th:replace="~{fragments/left.html :: leftSection}"></div>
+        </div>
+        <div class="col-md-10">
+            <div th:replace="~{fragments/top.html :: topSection}"></div>
+            <div class="main">
+                <h1>Main Content</h1>
+                <p>Welcome to the main content area!</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:insert="~{fragments/footer :: footerFragment}"></div>
+</body>
+</html>

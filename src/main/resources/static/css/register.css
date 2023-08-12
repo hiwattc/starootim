@@ -1,0 +1,81 @@
+body {
+    background-color: #f0f2f5;
+    #display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.registration-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 300px;
+}
+.registration-header {
+    text-align: center;
+}
+.registration-form {
+    margin-top: 20px;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    font-size: 16px; /* Increase font size */
+    font-weight: bold; /* Make it bolder */
+}
+.register-btn {
+    background-color: #1877f2;
+    color: #ffffff;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.register-btn:hover {
+    background-color: #3b5998;
+}
+
+.password-strength-meter {
+    display: flex;
+    align-items: center;
+    height: 30px;
+}
+
+.password-strength-label {
+    flex: 1;
+    font-size: 14px;
+}
+
+.password-strength-bar {
+    flex: 3;
+    height: 8px;
+    border-radius: 5px;
+}
+
+.strength-weak {
+    background-color: #ff0000;
+}
+
+.strength-fair {
+    background-color: #ffa500;
+}
+
+.strength-strong {
+    background-color: #00ff00;
+}
