@@ -4,6 +4,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.staroot.im.controller.ProfileController;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
 import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import com.warrenstrange.googleauth.GoogleAuthenticatorQRGenerator;
@@ -12,6 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -21,11 +24,14 @@ import org.springframework.web.bind.annotation.*;
 public class GAuthOtpController {
 
     private final GoogleAuthenticator gAuth;
+    private static final Logger logger = LoggerFactory.getLogger(GAuthOtpController.class);
 
     @SneakyThrows
     @GetMapping("/generate/{username}")
     public void generate(@PathVariable String username, HttpServletResponse response) {
         final GoogleAuthenticatorKey key = gAuth.createCredentials(username);
+
+        logger.debug("gooogle auth key ::"+key.getKey());
 
         //I've decided to generate QRCode on backend site
         QRCodeWriter qrCodeWriter = new QRCodeWriter();

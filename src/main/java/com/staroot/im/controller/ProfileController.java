@@ -3,6 +3,7 @@ package com.staroot.im.controller;
 import com.staroot.im.entity.User;
 import com.staroot.im.repository.UserRepository;
 import com.staroot.im.util.PwdUtil;
+import com.warrenstrange.googleauth.GoogleAuthenticator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -20,9 +21,11 @@ public class ProfileController {
     private static final Logger logger = LoggerFactory.getLogger(ProfileController.class);
 
     private final UserRepository userRepository;
+    private final GoogleAuthenticator gAuth;
 
-    public ProfileController(UserRepository userRepository) {
+    public ProfileController(UserRepository userRepository, GoogleAuthenticator gAuth) {
         this.userRepository = userRepository;
+        this.gAuth = gAuth;
     }
 
     @GetMapping("/modify")
@@ -89,4 +92,34 @@ public class ProfileController {
             return "/profile/modifyPwd";
         }
     }
+    @GetMapping("/mfa")
+    public String getMfaSettings(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession();
+        String userid = (String) session.getAttribute("userid");
+        logger.debug("session userid : "+userid);
+
+        User user = userRepository.findByUserid(userid);
+        model.addAttribute("user", user);
+        return "/profile/mfa";
+    }
+    @PostMapping("/mfa")
+    public String validateMfa(@RequestParam String email,@RequestParam String otpCode, HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession();
+        String userid = (String) session.getAttribute("userid");
+        logger.debug("session userid : "+userid);
+        User user = userRepository.findByUserid(userid);
+
+        logger.debug("email/otpCode::"+email + "/"+otpCode);
+
+        boolean authResult = gAuth.authorizeUser(email, Integer.parseInt(otpCode));
+
+        model.addAttribute("user", user);
+        if(authResult){
+            model.addAttribute("message","GoogleOTP Authentication Success!");
+        }else{
+            model.addAttribute("message","GoogleOTP Authentication Failed!");
+        }
+        return "/profile/mfa";
+    }
+
 }

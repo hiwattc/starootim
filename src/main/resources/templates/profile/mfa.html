@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{fragments/header :: headerFragment}"></div>
+<link rel="stylesheet" th:href="@{/css/register.css}" />
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2 bg-light sidebar" >
+      <div th:replace="~{fragments/left.html :: leftSection}"></div>
+    </div>
+    <div class="col-md-10">
+      <div th:replace="~{fragments/top.html :: topSection}"></div>
+      <div class="main" align="center">
+        <div class="registration-container">
+          <div class="registration-header">
+            <h2>Multi-Factor Authentication</h2>
+          </div>
+          <div class="registration-form">
+            <form method="post" action="/profile/mfa">
+              <div class="form-group">
+                <label for="userid">UserId:</label>
+                <input type="text" id="userid" name="userid" th:value="${user.userid}" disabled>
+              </div>
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email" th:value="${user.email}" required>
+              </div>
+              <div>
+                QRCODE
+                <a th:href="@{|/gauth/generate/${user.email}|}">qrcode</a>
+                <img th:src="@{|/gauth/generate/${user.email}|}" alt="Google OTP">
+
+              </div>
+              <div class="form-group">
+                <label for="email">OTP:</label>
+                <input type="text" id="otpCode" name="otpCode"  required>
+              </div>
+              <button class="register-btn" type="submit">Apply</button>
+            </form>
+            <p th:text="${message}"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:insert="~{fragments/footer :: footerFragment}"></div>
+</body>
+</html>
