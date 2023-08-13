@@ -25,8 +25,16 @@ public class TelegramService {
         String apiUrl = "https://api.telegram.org/bot" + telegramBotToken + "/sendMessage?chat_id=" + chatId;
         String emoji = "\uD83D\uDE0A \uD83C\uDF26  🔥☃️📛☂︎🩸"; // This is the smiley face emoji
 
-        String text = "hello this is springboot!!\n"+emoji+"hello\n"+emoji+"1234\n1234 ";
-        String requestBody = "{ \"text\": \"" + text + text + "\"}";
+        String imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkIQpUfhusoGFP1LMJbCDgbkKHxZpCNAR_5QistflnYg&s";
+        String text = "hello this is springboot!!\n"+emoji+"hello\n"+emoji+"1234\n1234 \n"+imageUrl;
+        String caption = "test image";
+
+        String requestBody = String.format("{\"photo\": \"%s\", \"caption\": \"%s\", \"text\": \"%s\"}",
+                imageUrl, caption,text);
+
+        logger.debug("requestBody::"+requestBody);
+
+        //String requestBody = "{ \"text\": \"" + text + text + "\"}";
         sendPostRequest(apiUrl, requestBody);
     }
 

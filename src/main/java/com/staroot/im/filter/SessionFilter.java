@@ -19,7 +19,17 @@ public class SessionFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String[] whiteList = {"/h2-console/*","/login", "/logout", "/register", "/css/*","/images/*","/social/*","/favicon.ico","/net/*","/telegram/*"};
+        String[] whiteList = {"/h2-console/*",
+                "/login",
+                "/logout",
+                "/register",
+                "/css/*",
+                "/images/*",
+                "/social/*",
+                "/favicon.ico",
+                "/net/*",
+                "/telegram/*",
+                "/gauth/*"};
         String requestURI = request.getRequestURI();
 
         HttpSession session = request.getSession(false); // 새 세션 생성을 막고 이미 존재하는 세션을 가져옴
