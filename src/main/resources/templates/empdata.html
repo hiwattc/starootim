@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{fragments/header :: headerFragment}"></div>
+<link rel="stylesheet" th:href="@{/css/userList.css}" />
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 bg-light sidebar" >
+            <div th:replace="~{fragments/left.html :: leftSection}"></div>
+        </div>
+        <div class="col-md-10">
+            <div th:replace="~{fragments/top.html :: topSection}"></div>
+            <div class="main">
+                <textarea id="jsondata" name="jsondata" rows="10" cols="100" th:text="${jsondata}"></textarea><br>
+                <textarea id="encdata" name="encdata" rows="10" cols="100" th:text="${encdata}"></textarea><br>
+                <textarea id="compdata" name="compdata" rows="10" cols="100" th:text="${compdata}"></textarea><br>
+                <textarea id="enccompdata" name="enccompdata" rows="10" cols="100" th:text="${enccompdata}"></textarea><br>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:insert="~{fragments/footer :: footerFragment}"></div>
+</body>
+</html>
+
+

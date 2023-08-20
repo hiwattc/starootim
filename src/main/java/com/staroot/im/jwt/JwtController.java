@@ -10,10 +10,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -29,14 +26,49 @@ public class JwtController {
     public String publicEndpoint() {
         return "Public endpoint";
     }
+
+    @PostMapping("/api/token/refresh")
+    public String login(@RequestBody String refreshToken) {
+        if (jwtUtils.validateJwtToken(refreshToken)) {
+            String userid = jwtUtils.getUsernameFromJwtToken(refreshToken);
+            String token = jwtUtils.generateJwtToken(userid);
+            String refreshtoken = jwtUtils.generateRefreshToken(userid);
+
+            logger.debug("refresh userid: " + userid);
+            logger.debug("refresh token: " + token);
+            logger.debug("refresh refreshtoken: " + refreshtoken);
+            return token+"/"+refreshtoken;
+        } else {
+            return "Invalid token";
+        }
+    }
+
     @GetMapping("/api/token")
+    public String getToken(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        String userid = (String) session.getAttribute("userid");
+        logger.debug("userid for jwt token::"+userid);
+        String token = jwtUtils.generateJwtToken(userid);
+        String refreshtoken = jwtUtils.generateRefreshToken(userid);
+        logger.debug("jwt token::"+token);
+        logger.debug("jwt refreshtoken::"+refreshtoken);
+        String useridFromToken = jwtUtils.getUsernameFromJwtToken(token);
+        logger.debug("useridFromToken::"+useridFromToken);
+        return token+"/"+refreshtoken;
+    }
+
+    @GetMapping("/api/token/test")
     public String login(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         String userid = (String) session.getAttribute("userid");
         logger.debug("userid for jwt token::"+userid);
 
         String token = jwtUtils.generateJwtToken(userid);
+        String refreshtoken = jwtUtils.generateRefreshToken(userid);
+
         logger.debug("jwt token::"+token);
+        logger.debug("jwt refreshtoken::"+refreshtoken);
+
         String useridFromToken = jwtUtils.getUsernameFromJwtToken(token);
         logger.debug("useridFromToken::"+useridFromToken);
 

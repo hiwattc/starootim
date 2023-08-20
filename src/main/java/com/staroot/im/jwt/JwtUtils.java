@@ -8,10 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
-import java.util.Base64;
-import java.util.Date;
-import java.util.UUID;
-
+import java.util.*;
+import org.springframework.beans.factory.annotation.Value;
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
@@ -27,6 +25,12 @@ public class JwtUtils {
     private final String secret = "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567";
     private final long expirationMs = 3600000; // 1 hour
 
+    @Value("${jwt.secret}")
+    private String secretForRefresh;
+
+    @Value("${jwt.refreshExpiration}")
+    private long refreshExpiration;
+
     public String generateJwtToken(String username) {
         Date expiration = new Date(System.currentTimeMillis() + expirationMs);
         String randomSecret = generateSafeToken(64);
@@ -39,6 +43,19 @@ public class JwtUtils {
                 //.signWith(SignatureAlgorithm.HS512, randomSecret)
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
+    }
+    private String createRefreshToken(Map<String, Object> claims, String subject, long expiration) {
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
+    }
+    public String generateRefreshToken(String username) {
+        Map<String, Object> claims = new HashMap<>();
+        return createRefreshToken(claims, username, refreshExpiration);
     }
     private String generateSafeToken(int size) {
         SecureRandom random = new SecureRandom();
