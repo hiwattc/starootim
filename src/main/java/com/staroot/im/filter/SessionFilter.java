@@ -29,7 +29,9 @@ public class SessionFilter extends OncePerRequestFilter {
                 "/favicon.ico",
                 "/net/*",
                 "/telegram/*",
-                "/gauth/*"};
+                "/gauth/*",
+                "/jwt/*"
+        };
         String requestURI = request.getRequestURI();
 
         HttpSession session = request.getSession(false); // 새 세션 생성을 막고 이미 존재하는 세션을 가져옴
