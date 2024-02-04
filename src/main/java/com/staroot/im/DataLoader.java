@@ -46,7 +46,7 @@ public class DataLoader implements CommandLineRunner {
 
 
         logger.debug("creating emp data...");
-        for(int i=0;i<50000;i++){
+        for(int i=0;i<50;i++){
         //for(int i=0;i<10;i++){
             Employee employee = new Employee();
             employee.setUserid("user"+i);
