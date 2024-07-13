@@ -3,8 +3,31 @@
 <head>
     <title>Login</title>
     <link rel="stylesheet" th:href="@{/css/login.css}" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LeXBg8qAAAAANtWsXe3No8WFSSyM_N8S7GYMeUB"></script>
 </head>
 <body>
+<script>
+    function check_recaptcha(){
+        var v = grecaptcha.getResponse();
+        if (v.length ==0) {
+            alert ("'로봇이 아닙니다.'를 체크해주세요.");
+            return false;
+        } else {
+            location.reload();
+            return true;
+        }
+    }
+    grecaptcha.ready(function() {
+        grecaptcha.execute('6LeXBg8qAAAAANtWsXe3No8WFSSyM_N8S7GYMeUB', {action: 'login'}).then(function(token) {
+            var recaptchaResponse = document.getElementById('g-recaptcha-response3');
+            alert("hi"+token);
+            recaptchaResponse.value = token;
+        });
+    });
+</script>
+
+
 <form method="post" action="/login">
 <div class="login-container">
     <div class="login-header">
@@ -19,8 +42,10 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
         </div>
+        <div class="g-recaptcha" data-sitekey="6LfLAA8qAAAAAGzEZoWWY04lsDQtYX7_Ggs0dY04"></div>
+        <input type="hidden" id="g-recaptcha-response3" name="g-recaptcha-response3"/>
         <p th:text="${errorMessage}"></p> <!-- Display the error message if available -->
-        <button class="login-btn" type="submit">Login</button>
+        <button class="login-btn" type="submit" onclick='return check_recaptcha();'>Login</button>
     </div>
     <a th:href="@{'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id='+${kakao_clientid}+'&redirect_uri='+${kakao_redirecturi}}"><img src="/images/kakao_login/ko/kakao_login_medium_narrow.png"></a></br>
     <!--<a href=""><img src="/images/kakao_login/en/kakao_login_medium_narrow.png"></a>-->

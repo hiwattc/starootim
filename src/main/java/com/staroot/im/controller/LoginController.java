@@ -2,6 +2,7 @@ package com.staroot.im.controller;
 
 import com.staroot.im.entity.User;
 import com.staroot.im.repository.UserRepository;
+import com.staroot.im.service.RecaptchaService;
 import com.staroot.im.util.PwdUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -22,6 +23,9 @@ public class LoginController {
     private String clientId;
     @Value("${kakao.default.redirecturi}")
     private String redirecturi;
+
+    @Autowired
+    private RecaptchaService recaptchaService;
 
     private final UserRepository userRepository;
     @Autowired
@@ -63,12 +67,36 @@ public class LoginController {
         return "main";
     }
     @PostMapping("/login")
-    public String processLogin(@RequestParam String userid, @RequestParam String password, HttpServletRequest request, Model model) {
+    public String processLogin(
+            @RequestParam String userid,
+            @RequestParam String password,
+            @RequestParam(value = "g-recaptcha-response",defaultValue = "") String recaptchaResponse,
+            @RequestParam(value = "g-recaptcha-response3",defaultValue = "") String recaptchaResponse3,
+            HttpServletRequest request,
+            Model model) {
         // In a real application, you would validate the user against the database or any other authentication mechanism.
         // For demonstration purposes, let's assume we have a user with username "user1" and the following salt and hashed password.
         model.addAttribute("kakao_clientid",clientId);
         model.addAttribute("kakao_redirecturi",redirecturi);
 
+        /* reCAPTCHA v2 */
+        if (!recaptchaService.verify(recaptchaResponse)) {
+            logger.debug("recaptchaResponse(v2) : "+recaptchaResponse.toString());
+            logger.debug("reCAPTCHA(v2) validation failed.!");
+            model.addAttribute("errorMessage(v2)", "reCAPTCHA validation failed.");
+            return "login";
+        }else{
+            logger.debug("reCAPTCHA(v2) validation success!");
+        }
+        /* reCAPTCHA v3 */
+        if (!recaptchaService.verifyForV3(recaptchaResponse3)) {
+            logger.debug("recaptchaResponse(v3) : "+recaptchaResponse3.toString());
+            logger.debug("reCAPTCHA(v3) validation failed.!");
+            model.addAttribute("errorMessage(v3)", "reCAPTCHA validation failed.");
+            //return "login";
+        }else{
+            logger.debug("reCAPTCHA(v3) validation success!");
+        }
         User user = userRepository.findByUserid(userid);
         if(user == null){
             logger.debug("login fail!");
