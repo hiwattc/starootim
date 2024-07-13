@@ -21,12 +21,22 @@
     grecaptcha.ready(function() {
         grecaptcha.execute('6LeXBg8qAAAAANtWsXe3No8WFSSyM_N8S7GYMeUB', {action: 'login'}).then(function(token) {
             var recaptchaResponse = document.getElementById('g-recaptcha-response3');
-            alert("hi"+token);
+            alert("hi111"+token);
             recaptchaResponse.value = token;
         });
     });
 </script>
+<script>
+    function onClick(e) {
+        alert("onClick called()");
+        e.preventDefault();
+        grecaptcha.enterprise.ready(async () => {
+            const token = await grecaptcha.enterprise.execute('6LeXBg8qAAAAANtWsXe3No8WFSSyM_N8S7GYMeUB', {action: 'LOGIN'});
+            alert("hi222:"+token);
+        });
 
+    }
+</script>
 
 <form method="post" action="/login">
 <div class="login-container">
