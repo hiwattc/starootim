@@ -39,7 +39,7 @@ public class DataLoader implements CommandLineRunner {
             user.setUserid("user"+i);
             user.setPassword(hashedPassword); // You can use SHA-256 encoding here if needed
             user.setSalt(salt);
-            user.setEmail("user"+i+"@gmail.com");
+            user.setEmail("starootmaster"+i+"@gmail.com");
             userRepository.save(user);
         }
         logger.debug("completed user data...");

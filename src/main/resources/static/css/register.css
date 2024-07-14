@@ -37,6 +37,19 @@ input[type="password"] {
     font-size: 16px; /* Increase font size */
     font-weight: bold; /* Make it bolder */
 }
+.verify-btn {
+    background-color: #031351;
+    color: #ffffff;
+    width: 60%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+.verify-btn:hover {
+    background-color: #3b5998;
+}
 .register-btn {
     background-color: #1877f2;
     color: #ffffff;
@@ -78,4 +91,17 @@ input[type="password"] {
 
 .strength-strong {
     background-color: #00ff00;
+}
+
+.loading {
+    cursor: not-allowed;
+}
+.error {
+    color: red;
+}
+.success {
+    color: green;
+}
+.highlight {
+    background-color: yellow;
 }

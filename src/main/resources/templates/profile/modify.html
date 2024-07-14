@@ -5,7 +5,7 @@
 <body>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-2 bg-light sidebar" >
+    <div class="col-md-2 bg-light sidebar">
       <div th:replace="~{fragments/left.html :: leftSection}"></div>
     </div>
     <div class="col-md-10">
@@ -23,9 +23,18 @@
               </div>
               <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="text" id="email" name="email" th:value="${user.email}" required>
+                <input type="text" id="email" name="email" th:value="${user.email}" required><br><br>
+                <button type="button" id="sendCodeBtn" class="verify-btn" onclick="sendVerificationCode()">Send Verification Code</button>
               </div>
-              <button class="register-btn" type="submit">Apply</button>
+              <div class="form-group">
+                <label for="verificationCode">Verification Code:</label>
+                <input type="text" id="verificationCode" name="verificationCode"><br><br>
+                <button type="button" class="verify-btn" onclick="verifyCode()">Verify Code</button>
+              </div>
+              <div class="form-group">
+                <label id="timerLabel"></label>
+              </div>
+              <button class="register-btn" type="submit" id="submitBtn" disabled>Apply</button>
             </form>
             <p th:text="${message}"></p>
           </div>
@@ -35,5 +44,76 @@
   </div>
 </div>
 <div th:insert="~{fragments/footer :: footerFragment}"></div>
+<script>
+  let timerInterval;
+
+  function sendVerificationCode() {
+    const email = document.getElementById('email').value;
+    const sendCodeBtn = document.getElementById('sendCodeBtn');
+    sendCodeBtn.disabled = true;
+    sendCodeBtn.textContent = 'Sending...';
+    sendCodeBtn.classList.add('loading');
+
+    fetch('/test/sendVerificationEmail?toEmail=' + email)
+            .then(response => response.text())
+            .then(data => {
+              //alert(data);
+              startTimer(3 * 60); // 3분 타이머 시작
+            })
+            .catch(error => console.error('Error:', error))
+            .finally(() => {
+                sendCodeBtn.disabled = false;
+                sendCodeBtn.textContent = 'Send Verification Code';
+                sendCodeBtn.classList.remove('loading');
+                document.getElementById('verificationCode').classList.add('highlight');
+              });
+
+  }
+
+  function verifyCode() {
+    const email = document.getElementById('email').value;
+    const code = document.getElementById('verificationCode').value;
+    fetch('/test/verification/verify?email=' + email + '&code=' + code, {
+      method: 'POST'
+    })
+            .then(response => response.text())
+            .then(data => {
+              const timerLabel = document.getElementById('timerLabel');
+              if (data === 'true') {
+                //alert('Verification successful!');
+                document.getElementById('submitBtn').disabled = false;
+                timerLabel.textContent = "Verification Success";
+                timerLabel.classList.remove('error');
+                timerLabel.classList.add('success');
+                clearInterval(timerInterval); // 타이머 정지
+              } else {
+                alert('Verification failed. Please try again.');
+              }
+            })
+            .catch(error => console.error('Error:', error));
+  }
+  function startTimer(duration) {
+    var timer = duration, minutes, seconds;
+    var timerLabel = document.getElementById('timerLabel');
+    timerLabel.classList.remove('success'); // Remove success class if it exists
+    timerLabel.classList.add('error'); // Add error class for timer countdown
+
+    clearInterval(timerInterval); // 이전 타이머가 있으면 정지
+    timerInterval = setInterval(function () {
+      minutes = parseInt(timer / 60, 10);
+      seconds = parseInt(timer % 60, 10);
+
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+
+      timerLabel.textContent = "Time remaining: " + minutes + ":" + seconds;
+
+      if (--timer < 0) {
+        clearInterval(timerInterval);
+        timerLabel.textContent = "Verification code expired. Please request a new code.";
+      }
+    }, 1000);
+  }
+</script>
 </body>
 </html>
