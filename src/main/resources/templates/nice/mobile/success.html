@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>NICE CheckPlus Success</title>
+</head>
+<body>
+<center>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+    Success<br>
+    <table border="1">
+        <tr>
+            <td>복호화한 시간</td>
+            <td th:text="${sCipherTime}">sCipherTime (YYMMDDHHMMSS)</td>
+        </tr>
+        <tr>
+            <td>요청 번호</td>
+            <td th:text="${sRequestNumber}">sRequestNumber</td>
+        </tr>
+        <tr>
+            <td>NICE응답 번호</td>
+            <td th:text="${sResponseNumber}">sResponseNumber</td>
+        </tr>
+        <tr>
+            <td>인증수단</td>
+            <td th:text="${sAuthType}">sAuthType</td>
+        </tr>
+        <tr>
+            <td>성명</td>
+            <td th:text="${sName}">sName</td>
+        </tr>
+        <tr>
+            <td>중복가입 확인값(DI)</td>
+            <td th:text="${sDupInfo}">sDupInfo</td>
+        </tr>
+        <tr>
+            <td>연계정보 확인값(CI)</td>
+            <td th:text="${sConnInfo}">sConnInfo</td>
+        </tr>
+        <tr>
+            <td>생년월일(YYYYMMDD)</td>
+            <td th:text="${sBirthDate}">sBirthDate</td>
+        </tr>
+        <tr>
+            <td>성별</td>
+            <td th:text="${sGender}">sGender</td>
+        </tr>
+        <tr>
+            <td>내/외국인정보</td>
+            <td th:text="${sNationalInfo}">sNationalInfo</td>
+        </tr>
+        <tr>
+            <td>휴대폰번호</td>
+            <td th:text="${sMobileNo}">sMobileNo</td>
+        </tr>
+        <tr>
+            <td>통신사</td>
+            <td th:text="${sMobileCo}">sMobileCo</td>
+        </tr>
+        <tr>
+            <td colspan="2">인증 후 결과값은 내부 설정에 따른 값만 리턴받으실 수 있습니다. <br>
+                일부 결과값이 null로 리턴되는 경우 관리담당자 또는 계약부서(02-2122-4615)로 문의바랍니다.
+            </td>
+        </tr>
+    </table><br><br>
+    <p th:text="${sMessage}">sMessage</p><br>
+</center>
+</body>
+
+</html>
