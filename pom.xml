@@ -32,7 +32,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -113,6 +116,34 @@
 			<artifactId>jasypt-spring-boot-starter</artifactId>
 			<version>3.0.5</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.niceid</groupId>
+			<artifactId>niceid</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/NiceID_v1.1.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.niceid</groupId>
+			<artifactId>ipin</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/IPIN2Client_v1.1.jar</systemPath>
+		</dependency>
+
+		<!-- JSP 관련 의존성 추가 -->
+		<!--
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		-->
 	</dependencies>
 
 	<build>

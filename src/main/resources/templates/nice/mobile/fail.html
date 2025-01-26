@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>NICE CheckPlus Fail</title>
+</head>
+<body>
+<center>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+    본인인증이 실패하였습니다.<br>
+    <table border="1">
+        <tr>
+            <td>복호화한 시간</td>
+            <td th:text="${sCipherTime}">sCipherTime (YYMMDDHHMMSS)</td>
+        </tr>
+        <tr>
+            <td>요청 번호</td>
+            <td th:text="${sRequestNumber}">sRequestNumber</td>
+        </tr>
+        <tr>
+            <td>본인인증 실패 코드</td>
+            <td th:text="${sErrorCode}">sErrorCode</td>
+        </tr>
+        <tr>
+            <td>인증수단</td>
+            <td th:text="${sAuthType}">sAuthType</td>
+        </tr>
+    </table><br><br>
+    <p th:text="${sMessage}">sMessage</p><br>
+</center>
+</body>
+
+</html>

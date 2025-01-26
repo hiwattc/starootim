@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="EUC-KR">
+	<!--<meta charset="UTF-8">-->
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>NICE평가정보 가상주민번호 서비스</title>
+	<script th:inline="javascript">
+		function fnLoad()
+		{
+			// 당사에서는 최상위를 'parent.opener.parent.document.'로 정의하였습니다
+			// 귀사의 환경 및 프로세스에 맞게 정의하시기 바랍니다
+			parent.opener.parent.document.vnoform.enc_data.value = /*[[${sResponseData}]]*/ 'sResponseData';
+
+			parent.opener.parent.document.vnoform.target = "Parent_window";
+			
+			// 인증결과 데이터를 최종 수신하는 결과페이지 URL (형식:절대주소, 필수항목:프로토콜) 
+			parent.opener.parent.document.vnoform.action = "http://localhost:8080/nice/ipin/result";
+			parent.opener.parent.document.vnoform.submit();
+			
+			self.close();
+		}
+	</script>
+</head>
+<body onLoad="fnLoad()">
+<p th:text="${sResponseData}"></p><br><br>
+</body>
+</html>

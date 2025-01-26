@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<!--<meta charset="EUC-KR">-->
+	<meta charset="UTF-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>NICE평가정보 가상주민번호 서비스</title>		
+	<style type="text/css"> 
+		body
+		{
+			color: #7f7f7f;
+			font-family: "Dotum","DotumChe","Arial";
+			background-color: #ffffff;
+		}
+	</style>
+</head>
+
+<body>
+	<p th:text="${sRtnMsg}"></p>
+	<p th:text="${iRtn}"></p>
+	<p th:text="${sResponseData}"></p>
+
+	<p th:text="'가상주민번호 : ' + ${sVNumber}">가상주민번호 : sVNumber</p>
+	<p th:text="'이름 : ' + ${sName}">이름 : sName</p>
+	<p th:text="'연령대 코드 : ' + ${sAgeCode}">연령대 코드 : sAgeCode</p>
+	<p th:text="'성별 코드 : ' + ${sGenderCode}">성별 코드 : sGenderCode</p>
+	<p th:text="'생년월일 : ' + ${sBirthDate}">생년월일 : sBirthDate</p>
+	<p th:text="'내/외국인 정보 : ' + ${sNationalInfo}">내/외국인 정보 : sNationalInfo</p>
+	<p th:text="'CP 요청번호 : ' + ${sCPRequestNum}">CP 요청번호 : sCPRequestNum</p>
+	<p th:text="'중복가입 확인값 (DI) : ' + ${sDupInfo}">중복가입 확인값 (DI) : sDupInfo</p>
+	<p th:text="'연계정보 확인값 (CI) : ' + ${sCoInfo1}">연계정보 확인값 (CI) : sCoInfo1</p>
+	<p th:text="'CI 갱신정보 : ' + ${sCIUpdate}">CI 갱신정보 : sCIUpdate</p>
+
+	<!-- 인증결과 form -->
+    <form name="form_ipin_result" method="post">
+		<!-- 인증결과 암호화 데이터 -->
+		<input type="hidden" name="enc_data" th:value="${sResponseData}"><br>
+	</form>
+</body>
+</html>

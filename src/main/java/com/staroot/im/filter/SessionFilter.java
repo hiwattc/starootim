@@ -30,7 +30,10 @@ public class SessionFilter extends OncePerRequestFilter {
                 "/net/*",
                 "/telegram/*",
                 "/gauth/*",
-                "/jwt/*"
+                "/jwt/*",
+                "/test/*",
+                "/nice",
+                "/nice/*"
         };
         String requestURI = request.getRequestURI();
 

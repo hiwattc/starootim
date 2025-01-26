@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="EUC-KR">
+	<!--<meta charset="UTF-8">-->
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>NICE평가정보 가상주민번호 서비스</title>		
+	<script>
+		window.name ="Parent_window";
+
+		function fnPopup(){
+			window.open('', 'popupIPIN2', 'width=450, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+			document.form_ipin.target = "popupIPIN2";
+			document.form_ipin.action = "https://cert.vno.co.kr/ipin.cb";
+			document.form_ipin.submit();
+		}
+	</script>
+</head>
+<body>
+<p th:text="${sRtnMsg}"></p><br><br>
+<p th:text="${iRtn}"></p><br><br>
+<p th:text="${sEncData}"></p><br><br>
+
+	<!-- 아이핀 가상주민번호 서비스 팝업 호출 form -->
+	<form name="form_ipin" method="post">
+		<!-- 요청모드 (필수 데이터) -->
+		<input type="text" name="m" value="pubmain">
+		<!-- 인증요청 암호화 데이터 -->
+		<input type="text" name="enc_data" th:value="${sEncData}">
+			<!-- 팝업 호출 이미지 버튼 -->	
+			<a href="javascript:fnPopup();">
+			<img src="http://image.creditbank.co.kr/static/img/vno/new_img/bt_17.gif" width=218 height=40 border=0>
+		</a>
+	</form>
+
+
+	<!-- 아이핀 가상주민번호 서비스 팝업 인증결과 전달 form -->
+	<form name="vnoform" method="post">
+		<!-- 인증결과 암호화 데이터 -->
+		<input type="hidden" name="enc_data">								
+	</form>
+</body>
+</html>
