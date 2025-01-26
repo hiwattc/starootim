@@ -1,0 +1,1 @@
+docker push core.harbor.localhost/my-springboot-app/my-springboot-app:latest

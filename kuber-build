@@ -1,0 +1,74 @@
+#deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboot-app
+  template:
+    metadata:
+      labels:
+        app: springboot-app
+    spec:
+      containers:
+      - name: springboot-app
+        image: core.harbor.localhost/my-springboot-app/my-springboot-app:latest
+        ports:
+        - containerPort: 8080
+
+#service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-service
+  annotations:
+    traefik.ingress.kubernetes.io/service.sticky.cookie: "true"  #Ingress외에여기에도 Stick Session설정해야 동작을 하네
+    traefik.ingress.kubernetes.io/service.sticky.cookie.name: "foobar" #Ingress외에여기에도 Stick Session설정해야 동작을 하네
+spec:
+  selector:
+    app: springboot-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: NodePort
+  sessionAffinity: ClientIP
+
+#ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spring-app-ingress
+  namespace: default
+  annotations:
+    #traefik.ingress.kubernetes.io/affinity: "cookie"
+    traefik.ingress.kubernetes.io/service.sticky: "true" # Sticky Session 활성화
+    traefik.ingress.kubernetes.io/service.sticky.cookie.name: "foobar" # 쿠키 이름 지정
+    traefik.ingress.kubernetes.io/service.sticky.cookie.secure: "true" # HTTPS에서만 사용
+    traefik.ingress.kubernetes.io/session-cookie-secure: "true"     # HTTPS에서만 쿠키 전송
+    traefik.ingress.kubernetes.io/session-cookie-httponly: "true"   # JavaScript로 쿠키에 접근 불가
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: jb.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: springboot-service
+            port:
+              number: 8080
+  tls:
+  - hosts:
+    - jb.com
+    secretName: registry-cert
+
+
+
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
